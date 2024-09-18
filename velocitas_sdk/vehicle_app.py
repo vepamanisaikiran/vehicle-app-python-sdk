@@ -126,3 +126,6 @@ class VehicleApp:
 
     async def publish_event(self, topic: str, data: str):
         await self.pubsub_client.publish_event(topic, data)
+
+    async def secure_mqtt_connect(self, username, password, cacert):
+        await self.pubsub_client.secure_mqtt_connect(username, password, cacert)
