@@ -34,9 +34,12 @@ class MqttTopicSubscription:
 class MqttClient(PubSubClient):
     """This class is a wrapper for the on_message callback of the MQTT broker."""
 
-    def __init__(self, hostname: str, port: Optional[int] = None):
+    def __init__(self, hostname: str, username: str, password: str, cacert: str,  port: Optional[int] = None):
         self._port = port
         self._hostname = hostname
+        self._username = username
+        self._password = password
+        self._cacert = cacert
         self._topics_to_subscribe: list[MqttTopicSubscription] = []
 
         self._pub_client = mqtt.Client()
@@ -62,7 +65,11 @@ class MqttClient(PubSubClient):
             self._sub_client.connect(self._hostname)
             self._pub_client.connect(self._hostname)
         else:
+            self._sub_client.username_pw_set(self._username, self._password)
+            self._sub_client.tls_set(ca_certs=self._cacert)
             self._sub_client.connect(self._hostname, self._port)
+            self._pub_client.username_pw_set(self._username, self._password)
+            self._pub_client.tls_set(ca_certs=self._cacert)
             self._pub_client.connect(self._hostname, self._port)
 
     async def run(self):
