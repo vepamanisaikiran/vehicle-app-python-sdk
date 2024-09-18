@@ -66,6 +66,10 @@ class VehicleApp:
     """Vehicle App base class. All Vehicle Apps must inherit from this class"""
 
     def __init__(self):
+        _username = os.getenv("SDV_MQTT_USERNAME")
+        _password = os.getenv("SDV_MQTT_PASSWORD")
+        logger.error(_username)
+        logger.error(_password)
         self.middleware = config.middleware
         self._vdb_client = VehicleDataBrokerClient()
         self.pubsub_client = self.middleware.pubsub_client
@@ -126,6 +130,3 @@ class VehicleApp:
 
     async def publish_event(self, topic: str, data: str):
         await self.pubsub_client.publish_event(topic, data)
-
-    async def secure_mqtt_connect(self, username, password, cacert):
-        await self.pubsub_client.secure_mqtt_connect(username, password, cacert)
