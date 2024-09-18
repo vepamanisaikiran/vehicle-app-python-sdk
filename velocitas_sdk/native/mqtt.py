@@ -91,12 +91,3 @@ class MqttClient(PubSubClient):
 
     async def publish_event(self, topic: str, data: str):
         return self._pub_client.publish(topic, data)
-    
-    async def secure_mqtt_connect(self, username, password, cacert):
-        self._pub_client.disconnect()
-        self._pub_client.username_pw_set(username, password)
-        self._pub_client.tls_set(cacert)
-        self._sub_client.disconnect()
-        self._sub_client.username_pw_set(username, password)
-        self._sub_client.tls_set(cacert)
-        self.init()
