@@ -12,14 +12,15 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import sys
-import os
 import logging
+import os
+import sys
 from urllib.parse import urlparse
 
 from velocitas_sdk.base import Middleware, MiddlewareType
 from velocitas_sdk.native.locator import NativeServiceLocator
 from velocitas_sdk.native.mqtt import MqttClient
+
 logger = logging.getLogger(__name__)
 
 
@@ -38,12 +39,19 @@ class NativeMiddleware(Middleware):
         _username = str(os.getenv("SDV_MQTT_USERNAME"))
         _password = str(os.getenv("SDV_MQTT_PASSWORD"))
         _cacert = str(os.getenv("SDV_MQTT_CACERT"))
-        logger.info(_cacert)
+        logger.debug(_cacert)
+        logger.error(_cacert)
         if _hostname is None:
             print("No hostname")
             sys.exit(-1)
 
-        self.pubsub_client = MqttClient(hostname=_hostname, username = _username, password = _password, cacert = _cacert, port=_port)
+        self.pubsub_client = MqttClient(
+            hostname=_hostname,
+            username=_username,
+            password=_password,
+            cacert=_cacert,
+            port=_port,
+        )
 
     async def start(self):
         await self.pubsub_client.init()
