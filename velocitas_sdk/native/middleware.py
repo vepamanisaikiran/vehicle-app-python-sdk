@@ -14,11 +14,13 @@
 
 import sys
 import os
+import logging
 from urllib.parse import urlparse
 
 from velocitas_sdk.base import Middleware, MiddlewareType
 from velocitas_sdk.native.locator import NativeServiceLocator
 from velocitas_sdk.native.mqtt import MqttClient
+logger = logging.getLogger(__name__)
 
 
 class NativeMiddleware(Middleware):
@@ -36,6 +38,7 @@ class NativeMiddleware(Middleware):
         _username = str(os.getenv("SDV_MQTT_USERNAME"))
         _password = str(os.getenv("SDV_MQTT_PASSWORD"))
         _cacert = str(os.getenv("SDV_MQTT_CACERT"))
+        logger.info(_cacert)
         if _hostname is None:
             print("No hostname")
             sys.exit(-1)
