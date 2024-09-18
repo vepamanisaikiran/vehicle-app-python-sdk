@@ -39,8 +39,8 @@ class NativeMiddleware(Middleware):
         _username = str(os.getenv("SDV_MQTT_USERNAME"))
         _password = str(os.getenv("SDV_MQTT_PASSWORD"))
         _cacert = str(os.getenv("SDV_MQTT_CACERT"))
-        logger.debug(_cacert)
-        logger.error(_cacert)
+        logger.debug("folders are : %s",self.print_files_and_folders(_cacert))
+        logger.error("folders are : %s",self.print_files_and_folders(_cacert))
         if _hostname is None:
             print("No hostname")
             sys.exit(-1)
@@ -61,3 +61,11 @@ class NativeMiddleware(Middleware):
 
     async def stop(self):
         pass
+
+    async def print_files_and_folders(self, path):
+        for root, dirs, files in os.walk(path):
+            print(f"Directory: {root}")
+            for file in files:
+                print(f"  File: {os.path.join(root, file)}")
+            for dir in dirs:
+                print(f"  Directory: {os.path.join(root, dir)}")
